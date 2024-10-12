@@ -2,6 +2,15 @@ import React, { useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
+import { Paper, List, ListItem, ListItemText } from "@mui/material";
+
+const dummyData = [
+  { ac_name: "Company A" },
+  { ac_name: "Company B" },
+  { ac_name: "Company C" },
+  { ac_name: "Company D" },
+  { ac_name: "Company E" },
+];
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -45,6 +54,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function SearchBar() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+
+    // Filter dummy data based on the input value
+    const filtered = dummyData.filter((company) =>
+      company.ac_name.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredData(filtered);
+  };
+
   return (
     <div>
       <Search>
@@ -54,10 +77,28 @@ function SearchBar() {
         <StyledInputBase
           placeholder="Search…"
           inputProps={{ "aria-label": "search" }}
+          value={searchTerm}
+          onChange={handleChange}
         />
       </Search>
+      {searchTerm && (
+        <Paper elevation={2} sx={{ maxHeight: 200, overflow: 'auto' }}>
+          <List>
+            {filteredData.map((company, index) => (
+              <ListItem button key={index}>
+                <ListItemText primary={company.ac_name} />
+              </ListItem>
+            ))}
+          </List>
+        </Paper>
+      )}
     </div>
   );
 }
 
 export default SearchBar;
+
+
+
+
+
