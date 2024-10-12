@@ -3,15 +3,16 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { Paper, List, ListItem, ListItemText } from "@mui/material";
-
-const dummyData = [
-  { ac_name: "Company A" },
-  { ac_name: "Company B" },
-  { ac_name: "Company C" },
-  { ac_name: "Company D" },
-  { ac_name: "Company E" },
-];
-
+import { useDispatch, useSelector } from "react-redux";
+import { setFilteredProducts } from "../Redux/slice/productSlice";
+const SearchContainer = styled("div")(({ theme }) => ({
+  position: "relative",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-end",
+  marginLeft: theme.spacing(2),
+  marginRight: theme.spacing(2),
+}));
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -19,7 +20,6 @@ const Search = styled("div")(({ theme }) => ({
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  marginLeft: 0,
   width: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(1),
@@ -52,53 +52,64 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
-
+const Dropdown = styled(Paper)(({ theme }) => ({
+  position: "absolute",
+  top: "100%",
+  left: "auto",
+  right: 0,
+  zIndex: 1,
+  maxHeight: 200,
+  overflow: "auto",
+  marginTop: theme.spacing(1),
+  width: "300px",
+}));
 function SearchBar() {
+  const dispatch = useDispatch();
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
+  const { products_data, filteredProducts } = useSelector((state) => state.product);
+
 
   const handleChange = (event) => {
     const value = event.target.value;
     setSearchTerm(value);
 
-    // Filter dummy data based on the input value
-    const filtered = dummyData.filter((company) =>
-      company.ac_name.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredData(filtered);
+    if (value.trim() === "") {
+      dispatch(setFilteredProducts(products_data));
+    } else {
+      const filtered = products_data.filter((product) =>
+        product.title.toLowerCase().includes(value.toLowerCase())
+      );
+      dispatch(setFilteredProducts(filtered));
+    }
   };
 
   return (
-    <div>
+    <SearchContainer>
       <Search>
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>
         <StyledInputBase
-          placeholder="Search…"
+          placeholder="Search products…"
           inputProps={{ "aria-label": "search" }}
           value={searchTerm}
           onChange={handleChange}
         />
       </Search>
-      {searchTerm && (
-        <Paper elevation={2} sx={{ maxHeight: 200, overflow: 'auto' }}>
+      {searchTerm && filteredProducts.length > 0 && (
+        <Dropdown elevation={2}>
           <List>
-            {filteredData.map((company, index) => (
+          {filteredProducts.map((product, index) => (
               <ListItem button key={index}>
-                <ListItemText primary={company.ac_name} />
+                <ListItemText primary={product.title} />
               </ListItem>
             ))}
           </List>
-        </Paper>
+        </Dropdown>
       )}
-    </div>
+    </SearchContainer>
   );
 }
 
 export default SearchBar;
-
-
-
-
-

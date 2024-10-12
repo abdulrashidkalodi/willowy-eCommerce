@@ -6,9 +6,14 @@ const productSlice = createSlice({
   initialState: {
     isLoading: false,
     products_data: products,
+    filteredProducts: products,
     isError: false,
-  }
+  },
+  reducers: {
+    setFilteredProducts: (state, action) => {
+      state.filteredProducts = action.payload; // Update filtered products
+    },
+  },
 });
-export const selectProducts = (state) => state.products.products_data;
-
+export const { setFilteredProducts } = productSlice.actions;
 export default productSlice.reducer;
