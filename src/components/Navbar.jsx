@@ -11,7 +11,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useSelector } from "react-redux";
 import Cart from "./Cart";
 import Dialog from "@mui/material/Dialog";
-
+import { Link } from "react-router-dom";
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -81,16 +81,31 @@ function Navbar() {
             <Typography
               variant="h6"
               noWrap
-              component="div"
-              sx={{ flexGrow: 0.1, display: { xs: "none", sm: "block" } }}
+              sx={{
+                flexGrow: 0.1,
+                display: {
+                  xs: "none",
+                  sm: "block",
+                  textDecoration: "none",
+                  color: "inherit",
+                },
+              }}
+              component={Link} // Use Link to make it navigable
+              to="/"
             >
               Home
             </Typography>{" "}
             <Typography
               variant="h6"
               noWrap
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+              component={Link} // Use Link to make it navigable
+              to="/products"
+              sx={{
+                flexGrow: 1,
+                display: { xs: "none", sm: "block" },
+                textDecoration: "none",
+                color: "inherit",
+              }}
             >
               Product
             </Typography>

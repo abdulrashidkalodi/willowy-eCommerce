@@ -5,8 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import Paper from "@mui/material/Paper";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import {
   Grid,
   Button,
@@ -17,10 +16,9 @@ import {
 import {
   AddCircleOutlineOutlined,
   RemoveCircleOutlineOutlined,
-  Close,
 } from "@mui/icons-material";
 import { useSelector, useDispatch } from "react-redux";
-import { updateQty } from "../Redux/slice/cartSlice";
+import { updateQty, removeFromCart } from "../Redux/slice/cartSlice";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -30,8 +28,16 @@ function Cart() {
     dispatch(updateQty({ productId, qty: 1 }));
   };
 
-  const decreaseQty = (productId) => {
-    dispatch(updateQty({ productId, qty: -1 }));
+  const decreaseQty = (productId, currentQty) => {
+    if (currentQty === 1) {
+      dispatch(removeFromCart(productId));
+    } else {
+      dispatch(updateQty({ productId, qty: -1 }));
+    }
+  };
+
+  const removeProduct = (productId) => {
+    dispatch(removeFromCart(productId));
   };
 
   const totalPrice = cartItems.reduce(
@@ -42,12 +48,12 @@ function Cart() {
   return (
     <div style={{ display: "flex", justifyContent: "flex-end" }}>
       <TableContainer
-      // component={Paper}
-      sx={{
-        maxWidth: { xs: 500, sm: 600 },
-        maxHeight: { xs: 400, sm: 500 },
-        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",  
-      }}
+        // component={Paper}
+        sx={{
+          maxWidth: { xs: 500, sm: 600 },
+          maxHeight: { xs: 400, sm: 500 },
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
+        }}
       >
         {" "}
         <DialogTitle>Your Cart</DialogTitle>
@@ -104,7 +110,9 @@ function Cart() {
                             <Button
                               variant="contained"
                               size="small"
-                              onClick={() => decreaseQty(item.product.id)}
+                              onClick={() =>
+                                decreaseQty(item.product.id, item.qty)
+                              }
                             >
                               <RemoveCircleOutlineOutlined />
                             </Button>
@@ -133,8 +141,10 @@ function Cart() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <IconButton>
-                          <DeleteOutlinedIcon/>
+                        <IconButton
+                          onClick={() => removeProduct(item.product.id)}
+                        >
+                          <DeleteOutlinedIcon />
                         </IconButton>
                       </Grid>
                     </Grid>
