@@ -38,15 +38,21 @@ function ProductCard({ product }) {
       return newQty;
     });
   };
+    const truncateText = (text, length) => {
+      if (text.length > length) {
+        return text.substring(0, length) + "...";
+      }
+      return text;
+    };
   return (
     <div className="card">
       <div className="card-image-container">
         <img className="card-image" src={product.image} alt={product.title} />
       </div>
       <div className="card-details">
-        <h5 className="card-title">{product.title}</h5>
+        <h5 className="card-title">{truncateText(product.title, 20)}</h5>
         <p className="card-price">${product.price}</p>
-        <p className="card-description">{product.description}</p>
+        <p className="card-description">{truncateText(product.description, 100)}</p>
         {!inCart ? (
           <Button variant="contained" onClick={handleAddToCart}>
             Add To Cart
