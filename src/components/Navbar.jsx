@@ -49,7 +49,7 @@ function Navbar() {
                   color: "inherit",
                 },
               }}
-              component={Link} // Use Link to make it navigable
+              component={Link} 
               to="/"
             >
               Home
@@ -57,7 +57,7 @@ function Navbar() {
             <Typography
               variant="h6"
               noWrap
-              component={Link} // Use Link to make it navigable
+              component={Link} 
               to="/products"
               sx={{
                 flexGrow: 1,
@@ -70,6 +70,7 @@ function Navbar() {
             </Typography>
             {/* search component */}
             <SearchItem />
+            {/* end */}
             <IconButton
               sx={{ position: "relative", m: 2 }}
               onClick={handleCartOpen}
@@ -108,7 +109,9 @@ function Navbar() {
         }}
         hideBackdrop
       >
+        {/* cart component */}
         <Cart onClick={handleCartClose} />
+        {/* end */}
       </Dialog>
     </React.Fragment>
   );

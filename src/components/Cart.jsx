@@ -48,7 +48,6 @@ function Cart() {
   return (
     <div style={{ display: "flex", justifyContent: "flex-end" }}>
       <TableContainer
-        // component={Paper}
         sx={{
           maxWidth: { xs: 500, sm: 600 },
           maxHeight: { xs: 400, sm: 500 },

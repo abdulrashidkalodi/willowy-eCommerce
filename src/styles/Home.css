@@ -8,7 +8,7 @@
 }
 
 .product-container .ProductCard {
-  flex: 1 1 calc(25% - 16px); /* Four cards per row */
+  flex: 1 1 calc(25% - 16px);
   margin-bottom: 20px;
   box-sizing: border-box;
 }
