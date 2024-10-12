@@ -22,8 +22,8 @@ const cartSlice = createSlice({
       const productExist = state.items.find(
         (item) => item.product.id === productId
       );
-      if (productExist) {
-        productExist.qty = qty;
+      if (productExist && productExist.qty + qty >= 1) {
+        productExist.qty += qty;
       }
     },
     removeFromCart: (state, action) => {

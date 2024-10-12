@@ -5,8 +5,15 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Paper from "@mui/material/Paper";
-import { Grid, Button, Typography, IconButton } from "@mui/material";
+import {
+  Grid,
+  Button,
+  Typography,
+  IconButton,
+  DialogTitle,
+} from "@mui/material";
 import {
   AddCircleOutlineOutlined,
   RemoveCircleOutlineOutlined,
@@ -17,28 +24,37 @@ import { updateQty } from "../Redux/slice/cartSlice";
 
 function Cart() {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.items); 
+  const cartItems = useSelector((state) => state.cart.items);
 
   const addQty = (productId) => {
-    dispatch(updateQty({ productId, qty: 1 })); 
+    dispatch(updateQty({ productId, qty: 1 }));
   };
 
   const decreaseQty = (productId) => {
-    dispatch(updateQty({ productId, qty: -1 })); 
+    dispatch(updateQty({ productId, qty: -1 }));
   };
 
-  const totalPrice = cartItems.reduce((total, item) => total + item.product.price * item.qty, 0);
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.product.price * item.qty,
+    0
+  );
 
   return (
-    <div style={{ display: "flex", justifyContent: "flex-end", padding: "20px" }}>
+    <div style={{ display: "flex", justifyContent: "flex-end" }}>
       <TableContainer
-        component={Paper}
-        sx={{
-          maxWidth: { xs: 400, sm: 500 }, 
-          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
-        }}
+      // component={Paper}
+      sx={{
+        maxWidth: { xs: 500, sm: 600 },
+        maxHeight: { xs: 400, sm: 500 },
+        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",  
+      }}
       >
-        <Table sx={{ minWidth: { xs: 400, sm: 500 } }} aria-label="spanning table">
+        {" "}
+        <DialogTitle>Your Cart</DialogTitle>
+        <Table
+          sx={{ minWidth: { xs: 400, sm: 500 } }}
+          aria-label="spanning table"
+        >
           <TableHead>
             <TableRow>
               <TableCell align="center">Item</TableCell>
@@ -59,8 +75,8 @@ function Cart() {
                   <TableCell align="center">
                     <Grid item xs={4} sm={2}>
                       <img
-                        src={item.product.image} 
-                        alt={item.product.title} 
+                        src={item.product.image}
+                        alt={item.product.title}
                         style={{ width: "100px", borderRadius: "8px" }}
                       />
                     </Grid>
@@ -68,9 +84,9 @@ function Cart() {
                   <TableCell align="center">
                     <Grid
                       container
-                      direction="column" 
-                      alignItems="center" 
-                      spacing={1} 
+                      direction="column"
+                      alignItems="center"
+                      spacing={1}
                     >
                       <Grid item>
                         <Typography variant="h6" sx={{ textAlign: "center" }}>
@@ -79,7 +95,7 @@ function Cart() {
                       </Grid>
                       <Grid item>
                         <Typography variant="h6" sx={{ textAlign: "center" }}>
-                          ${item.product.price.toFixed(2)} 
+                          ${item.product.price.toFixed(2)}
                         </Typography>
                       </Grid>
                       <Grid item>
@@ -89,13 +105,12 @@ function Cart() {
                               variant="contained"
                               size="small"
                               onClick={() => decreaseQty(item.product.id)}
-                              disabled={item.qty === 1} 
                             >
                               <RemoveCircleOutlineOutlined />
                             </Button>
                           </Grid>
                           <Grid item>
-                            <Typography variant="h6">{item.qty}</Typography> 
+                            <Typography variant="h6">{item.qty}</Typography>
                           </Grid>
                           <Grid item>
                             <Button
@@ -113,11 +128,13 @@ function Cart() {
                   <TableCell align="center">
                     <Grid container direction="column" alignItems="flex-end">
                       <Grid item>
-                        <Typography variant="h6">${(item.product.price * item.qty).toFixed(2)}</Typography> 
+                        <Typography variant="h6">
+                          ${(item.product.price * item.qty).toFixed(2)}
+                        </Typography>
                       </Grid>
                       <Grid item>
                         <IconButton>
-                          <Close />
+                          <DeleteOutlinedIcon/>
                         </IconButton>
                       </Grid>
                     </Grid>
