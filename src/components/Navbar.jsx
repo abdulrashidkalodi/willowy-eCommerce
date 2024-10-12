@@ -8,6 +8,8 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import SearchIcon from "@mui/icons-material/Search";
+import { useSelector } from "react-redux";
+import Cart from "./Cart";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -51,18 +53,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function Navbar() {
+  const cartItems = useSelector((state) => state.cart.items);
+  const totalqty = cartItems.reduce(
+    (total, item) => total + item.qty,
+    0
+  );
+  const [showCart, setShowCart] = React.useState(false);
+
+  const handleCart = () => {
+    setShowCart((prev) => !prev);
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-          </IconButton>
           <Typography
             variant="h4"
             noWrap
@@ -96,9 +100,31 @@ function Navbar() {
               inputProps={{ "aria-label": "search" }}
             />
           </Search>
-          <LocalMallOutlinedIcon sx={{ m: 2 }}>3</LocalMallOutlinedIcon>
+          <IconButton
+            sx={{ position: "relative", m: 2 }}
+            onClick={handleCart}
+          >
+            <LocalMallOutlinedIcon />
+            {totalqty > 0 && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: -6,
+                  right: -10,
+                  background: "red",
+                  borderRadius: "50%",
+                  padding: "0 6px",
+                  color: "white",
+                  fontSize: "12px",
+                }}
+              >
+                {totalqty}
+              </span>
+            )}
+          </IconButton>{" "}
         </Toolbar>
       </AppBar>
+      {showCart && <Cart />}
     </Box>
   );
 }
