@@ -6,7 +6,9 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
-import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
+import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
+import SearchIcon from "@mui/icons-material/Search";
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -37,7 +39,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
@@ -61,7 +62,6 @@ function Navbar() {
             aria-label="open drawer"
             sx={{ mr: 2 }}
           >
-            {/* <MenuIcon /> */}
           </IconButton>
           <Typography
             variant="h4"
@@ -96,7 +96,7 @@ function Navbar() {
               inputProps={{ "aria-label": "search" }}
             />
           </Search>
-         <LocalMallOutlinedIcon sx={{ m: 2 }}>3</LocalMallOutlinedIcon>
+          <LocalMallOutlinedIcon sx={{ m: 2 }}>3</LocalMallOutlinedIcon>
         </Toolbar>
       </AppBar>
     </Box>
