@@ -9,24 +9,31 @@ import { addToCart, updateQty } from "../Redux/slice/cartSlice";
 function ProductCard({ product }) {
   const dispatch = useDispatch();
   const [inCart, setInCart] = useState(false);
-  const [qty, setqty] = useState(1);
+  const [qty, setQty] = useState(1);
 
   const handleAddToCart = () => {
-    dispatch(addToCart({ product, qty })); 
-    setInCart(true); 
+    dispatch(addToCart({ product, qty }));
+    setInCart(true);
   };
 
   const addQty = () => {
-    setqty((prevqty) => prevqty + 1); 
-    dispatch(updateQty({ productId: product.id, qty: qty + 1 }));
+    setQty((prevQty) => {
+      const newQty = prevQty + 1; 
+      dispatch(updateQty({ productId: product.id, qty: newQty }));
+      return newQty; 
+    });
   };
 
   const decreaseQty = () => {
-    const newqty = Math.max(qty - 1, 1);
-    setqty(newqty);
-    dispatch(updateQty({ productId: product.id, qty: newqty })); 
+    setQty((prevQty) => {
+      const newQty = Math.max(prevQty - 1);
+      dispatch(updateQty({ productId: product.id, qty: newQty }));
+      if (newQty === 0) {
+        setInCart(false);
+      }
+      return newQty;
+    });
   };
-  
   return (
     <div className="card">
       <div className="card-image-container">
